@@ -1,4 +1,5 @@
 const speakeasy = require("speakeasy");
+const jwt = require("jsonwebtoken");
 
 function verifyTOTP(req, res) {
     try {
@@ -9,8 +10,11 @@ function verifyTOTP(req, res) {
             window: 1,
         });
         if (verified) {
+            const token = jwt.sign({ Issuer: "Control" }, process.env.JWT_SECRET, {
+                expiresIn: "1h",
+            });
             res.status(200).json({
-                token: "JWT Token",
+                token: token,
             });
         } else {
             res.status(400).send("Invalid Token");
