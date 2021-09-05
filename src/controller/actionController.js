@@ -29,4 +29,14 @@ function getAction(req, res) {
     res.status(200).send(actions);
 }
 
-module.exports = { getAction };
+function updateAction(req, res) {
+    const index = parseInt(req.params.id, 10);
+    if (index >= 0 && index < actions.length) {
+        actions[index].status = !actions[index].status;
+        return res.status(200).send("Action Executed");
+    } else {
+        return res.status(400).send("Invalid Id");
+    }
+}
+
+module.exports = { getAction, updateAction };
